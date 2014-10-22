@@ -3,7 +3,7 @@ extern crate hotspot;
 
 use std::io::fs::PathExtensions;
 
-use hotspot::Model;
+use hotspot::Circuit;
 
 #[bench]
 fn new(bench: &mut test::Bencher) {
@@ -14,7 +14,7 @@ fn new(bench: &mut test::Bencher) {
         let config = config.as_str().unwrap();
 
         bench.iter(|| {
-            Model::new(floorplan, config, "").unwrap()
+            Circuit::new(floorplan, config, "").unwrap()
         });
     }
 }

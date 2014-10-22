@@ -4,7 +4,7 @@ extern crate hotspot;
 
 use std::io::fs::PathExtensions;
 
-use hotspot::Model;
+use hotspot::Circuit;
 
 macro_rules! assert_almost_eq(
     ($given:expr, $expected:expr) => ({
@@ -18,7 +18,7 @@ macro_rules! assert_almost_eq(
 #[test]
 fn new() {
     let (floorplan, config) = (find_fixture("002.flp"), find_fixture("hotspot.config"));
-    let model = Model::new(floorplan.as_str().unwrap(), config.as_str().unwrap(), "").unwrap();
+    let circuit = Circuit::new(floorplan.as_str().unwrap(), config.as_str().unwrap(), "").unwrap();
 
     let capacitance = vec![3.496500000000000e-04, 3.496500000000000e-04,
                            1.065600000000000e-04, 1.065600000000000e-04,
@@ -232,10 +232,10 @@ fn new() {
                            0.000000000000000e+00,  0.000000000000000e+00,
                            0.000000000000000e+00,  7.332854157108631e+00];
 
-    assert_eq!(model.cores, 2);
-    assert_eq!(model.nodes, 20);
-    assert_almost_eq!(model.capacitance, capacitance);
-    assert_almost_eq!(model.conductance, conductance);
+    assert_eq!(circuit.cores, 2);
+    assert_eq!(circuit.nodes, 20);
+    assert_almost_eq!(circuit.capacitance, capacitance);
+    assert_almost_eq!(circuit.conductance, conductance);
 }
 
 fn find_fixture(name: &'static str) -> Path {

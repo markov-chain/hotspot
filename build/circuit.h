@@ -1,5 +1,5 @@
-#ifndef __MODEL_H__
-#define __MODEL_H__
+#ifndef __CIRCUIT_H__
+#define __CIRCUIT_H__
 
 #include <util.h>
 #include <flp.h>
@@ -11,9 +11,9 @@ typedef struct {
 	size_t nodes;
 	double *capacitance;
 	double *conductance;
-} Model;
+} Circuit;
 
-Model *new_model(const char *floorplan, const char *config, const char *params);
-void free_model(Model *model);
+Circuit *new_circuit(const char *floorplan, const char *config, const char *params);
+void free_circuit(Circuit *circuit);
 
 #endif
