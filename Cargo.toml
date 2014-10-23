@@ -7,3 +7,6 @@ build = "make -f Makefile.cargo"
 [lib]
 name = "hotspot"
 doctest = false
+
+[dev-dependencies.assert]
+git = "https://github.com/rs-math/assert"

@@ -1,19 +1,12 @@
-#![feature(macro_rules)]
+#![feature(phase)]
+
+#[phase(plugin)] extern crate assert;
 
 extern crate hotspot;
 
 use std::io::fs::PathExtensions;
 
 use hotspot::Circuit;
-
-macro_rules! assert_almost_eq(
-    ($given:expr, $expected:expr) => ({
-        assert_eq!($given.len(), $expected.len());
-        for i in range(0u, $given.len()) {
-            assert!(::std::num::abs($given[i] - $expected[i]) < 1e-8);
-        }
-    });
-)
 
 #[test]
 fn new() {
@@ -234,11 +227,11 @@ fn new() {
 
     assert_eq!(circuit.cores, 2);
     assert_eq!(circuit.nodes, 20);
-    assert_almost_eq!(circuit.capacitance, capacitance);
-    assert_almost_eq!(circuit.conductance, conductance);
+    assert_close!(circuit.capacitance, capacitance);
+    assert_close!(circuit.conductance, conductance);
 }
 
-fn find_fixture(name: &'static str) -> Path {
+fn find_fixture(name: &str) -> Path {
     let path = Path::new("fixtures").join(name);
     assert!(path.exists());
     path
