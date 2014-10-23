@@ -21,7 +21,8 @@ $(src)/libhotspot.a: $(src)/Makefile
 $(src)/Makefile: $(archive)
 	mkdir -p $(src)
 	tar -xzf $(archive) --strip=1 -C $(src)
-	sed -i '.orig' -e 's/^EXTRAFLAGS.*/EXTRAFLAGS=-fPIC/' $(src)/Makefile
+	cp $(src)/Makefile $(src)/Makefile.orig
+	sed -e 's/^EXTRAFLAGS.*/EXTRAFLAGS=-fPIC/' $(src)/Makefile.orig > $(src)/Makefile
 
 $(archive):
 	curl $(url) -o $@
