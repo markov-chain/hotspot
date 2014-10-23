@@ -20,7 +20,7 @@ fn new(bench: &mut test::Bencher) {
 }
 
 fn find_fixture(name: &'static str) -> Path {
-    let path = Path::new("tests").join_many(["fixtures", name]);
+    let path = Path::new("fixtures").join(name);
     assert!(path.exists());
     path
 }
