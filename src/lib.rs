@@ -23,7 +23,7 @@ extern {
 
 /// A thermal RC circuit based on the block HotSpot model.
 pub struct Circuit {
-    /// The number of cores (active thermal nodes).
+    /// The number of active thermal nodes (processing elements).
     pub cores: uint,
     /// The number of thermal nodes, which is `4 * cores + 12`.
     pub nodes: uint,
@@ -42,30 +42,35 @@ impl Circuit {
     /// the command-line arguments of the HotSpot tool. The names of parameters
     /// should not include dashes in front of them; for instance, `params` can
     /// be `"t_chip 0.00015 k_chip 100.0"`.
-    pub fn new(floorplan: &str, config: &str, params: &str) -> Result<Circuit, ()> {
+    ///
+    /// It is important to note that the function relies on the original HotSpot
+    /// library written in C. This library calls `exit(1)` whenever an input
+    /// argument is invalid, which immediately terminates the calling program.
+    /// Make sure all the input files exist.
+    pub fn new(floorplan: &str, config: &str, params: &str) -> Result<Circuit, &'static str> {
+        use std::ptr::copy_nonoverlapping_memory;
+
         unsafe {
             let c_circuit = new_circuit(floorplan.to_c_str().as_ptr(),
                                         config.to_c_str().as_ptr(),
                                         params.to_c_str().as_ptr());
             if c_circuit.is_null() {
-                return Err(());
+                return Err("HotSpot failed to construct a thermal circuit");
             }
 
-            let nodes = (*c_circuit).nodes as uint;
+            let nc = (*c_circuit).nodes as uint;
 
             let mut circuit = Circuit {
                 cores: (*c_circuit).cores as uint,
-                nodes: nodes,
-                capacitance: Vec::from_elem(nodes, 0.0),
-                conductance: Vec::from_elem(nodes * nodes, 0.0),
+                nodes: nc,
+                capacitance: Vec::from_elem(nc, 0.0),
+                conductance: Vec::from_elem(nc * nc, 0.0),
             };
 
-            std::ptr::copy_nonoverlapping_memory(circuit.capacitance.as_mut_ptr(),
-                                                 (*c_circuit).capacitance as *const f64,
-                                                 nodes);
-            std::ptr::copy_nonoverlapping_memory(circuit.conductance.as_mut_ptr(),
-                                                 (*c_circuit).conductance as *const f64,
-                                                 nodes * nodes);
+            copy_nonoverlapping_memory(circuit.capacitance.as_mut_ptr(),
+                                       (*c_circuit).capacitance as *const f64, nc);
+            copy_nonoverlapping_memory(circuit.conductance.as_mut_ptr(),
+                                       (*c_circuit).conductance as *const f64, nc * nc);
             free_circuit(c_circuit);
 
             Ok(circuit)

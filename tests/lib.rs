@@ -9,9 +9,25 @@ use hotspot::Circuit;
 #[test]
 fn new() {
     let (floorplan, config) = (find_fixture("002.flp"), find_fixture("hotspot.config"));
-    let circuit = Circuit::new(floorplan.as_str().unwrap(), config.as_str().unwrap(), "").unwrap();
+    let circuit = Circuit::new(floorplan.as_str().unwrap(),
+                               config.as_str().unwrap(), "").unwrap();
 
-    let capacitance = vec![
+    assert_eq!(circuit.cores, 2);
+    assert_eq!(circuit.nodes, 20);
+    assert_close!(circuit.capacitance, fixture::capacitance);
+    assert_close!(circuit.conductance, fixture::conductance);
+}
+
+fn find_fixture(name: &str) -> Path {
+    use std::io::fs::PathExtensions;
+    let path = Path::new("tests").join_many(["fixtures", name]);
+    assert!(path.exists());
+    path
+}
+
+#[allow(non_upper_case_globals)]
+mod fixture {
+    pub const capacitance: [f64, ..20] = [
         3.496500000000000e-04, 3.496500000000000e-04, 1.065600000000000e-04,
         1.065600000000000e-04, 4.728600000000000e-03, 4.728600000000000e-03,
         8.457534000000000e-02, 8.457534000000000e-02, 2.458872000000000e-01,
@@ -20,7 +36,8 @@ fn new() {
         5.032232730000000e+00, 1.427208862500000e+01, 1.427208862500000e+01,
         1.427208862500000e+01, 1.427208862500000e+01,
     ];
-    let conductance = vec![
+
+    pub const conductance: [f64, ..400] = [
         2.681666666666667e+00, -1.500000000000000e-02, -2.666666666666667e+00,
         0.000000000000000e+00,  0.000000000000000e+00,  0.000000000000000e+00,
         0.000000000000000e+00,  0.000000000000000e+00,  0.000000000000000e+00,
@@ -156,16 +173,4 @@ fn new() {
         0.000000000000000e+00,  0.000000000000000e+00,  0.000000000000000e+00,
         7.332854157108631e+00,
     ];
-
-    assert_eq!(circuit.cores, 2);
-    assert_eq!(circuit.nodes, 20);
-    assert_close!(circuit.capacitance, capacitance);
-    assert_close!(circuit.conductance, conductance);
-}
-
-fn find_fixture(name: &str) -> Path {
-    use std::io::fs::PathExtensions;
-    let path = Path::new("tests").join_many(["fixtures", name]);
-    assert!(path.exists());
-    path
 }
