@@ -9,8 +9,7 @@ use hotspot::Circuit;
 #[test]
 fn new() {
     let (floorplan, config) = (find_fixture("002.flp"), find_fixture("hotspot.config"));
-    let circuit = Circuit::new(floorplan.as_str().unwrap(),
-                               config.as_str().unwrap(), "").unwrap();
+    let circuit = Circuit::new(&floorplan, &config, "").unwrap();
 
     assert_eq!(circuit.cores, 2);
     assert_eq!(circuit.nodes, 20);

@@ -21,7 +21,7 @@ extern {
     fn free_circuit(circuit: *mut CCircuit);
 }
 
-/// A thermal RC circuit based on the block HotSpot model.
+/// A thermal RC circuit.
 pub struct Circuit {
     /// The number of active thermal nodes (processing elements).
     pub cores: uint,
@@ -47,7 +47,7 @@ impl Circuit {
     /// library written in C. This library calls `exit(1)` whenever an input
     /// argument is invalid, which immediately terminates the calling program.
     /// Make sure all the input files exist.
-    pub fn new(floorplan: &str, config: &str, params: &str) -> Result<Circuit, &'static str> {
+    pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
         use std::ptr::copy_nonoverlapping_memory;
 
         unsafe {
