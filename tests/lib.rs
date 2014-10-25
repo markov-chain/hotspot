@@ -4,8 +4,6 @@
 
 extern crate hotspot;
 
-use std::io::fs::PathExtensions;
-
 use hotspot::Circuit;
 
 #[test]
@@ -166,6 +164,7 @@ fn new() {
 }
 
 fn find_fixture(name: &str) -> Path {
+    use std::io::fs::PathExtensions;
     let path = Path::new("fixtures").join(name);
     assert!(path.exists());
     path
