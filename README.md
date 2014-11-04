@@ -11,5 +11,5 @@ simulator used in computer-architecture studies.
 
 [1]: http://lava.cs.virginia.edu/HotSpot/
 
-[travis-svg]: https://travis-ci.org/rs-eslab/hotspot.svg?branch=master
-[travis-url]: https://travis-ci.org/rs-eslab/hotspot
+[travis-svg]: https://travis-ci.org/stainless-steel/hotspot.svg?branch=master
+[travis-url]: https://travis-ci.org/stainless-steel/hotspot
