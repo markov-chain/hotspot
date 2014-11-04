@@ -34,7 +34,7 @@ pub struct Circuit {
 }
 
 impl Circuit {
-    /// Creates a thermal RC circuit based on the block HotSpot model.
+    /// Create a thermal RC circuit based on the block HotSpot model.
     ///
     /// The result is an equivalent thermal RC circuit constructed according to
     /// the block HotSpot model for the given floorplan file, configuration
