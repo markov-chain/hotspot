@@ -54,9 +54,9 @@ impl Circuit {
             };
 
             copy(circuit.capacitance.as_mut_ptr(),
-                 (*raw_circuit).capacitance as *const f64, nc);
+                 (*raw_circuit).capacitance as *const _, nc);
             copy(circuit.conductance.as_mut_ptr(),
-                 (*raw_circuit).conductance as *const f64, nc * nc);
+                 (*raw_circuit).conductance as *const _, nc * nc);
 
             raw::free_circuit(raw_circuit);
 

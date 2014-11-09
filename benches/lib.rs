@@ -1,4 +1,5 @@
 extern crate test;
+
 extern crate hotspot;
 
 use hotspot::Circuit;
