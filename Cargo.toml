@@ -2,11 +2,7 @@
 name = "hotspot"
 version = "0.0.1"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
-build = "make -f Makefile.cargo"
-
-[lib]
-name = "hotspot"
-doctest = false
+build = "build.rs"
 
 [dev-dependencies.assert]
 git = "https://github.com/stainless-steel/assert"

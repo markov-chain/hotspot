@@ -1,0 +1,3 @@
+[submodule "build/libhotspot"]
+	path = build/libhotspot
+	url = https://github.com/stainless-steel/libhotspot.git

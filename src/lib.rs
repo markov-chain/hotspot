@@ -4,22 +4,7 @@
 
 extern crate libc;
 
-use libc::{c_char, c_double, size_t};
-
-#[repr(C)]
-struct CCircuit {
-    cores: size_t,
-    nodes: size_t,
-    capacitance: *mut c_double,
-    conductance: *mut c_double,
-}
-
-#[link(name = "hotspot", kind = "static")]
-extern {
-    fn new_circuit(floorplan: *const c_char, config: *const c_char,
-                   params: *const c_char) -> *mut CCircuit;
-    fn free_circuit(circuit: *mut CCircuit);
-}
+mod raw;
 
 /// A thermal RC circuit.
 pub struct Circuit {
@@ -48,30 +33,31 @@ impl Circuit {
     /// argument is invalid, which immediately terminates the calling program.
     /// Make sure all the input files exist.
     pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
-        use std::ptr::copy_nonoverlapping_memory;
+        use std::ptr::copy_nonoverlapping_memory as copy;
 
         unsafe {
-            let c_circuit = new_circuit(floorplan.to_c_str().as_ptr(),
-                                        config.to_c_str().as_ptr(),
-                                        params.to_c_str().as_ptr());
-            if c_circuit.is_null() {
+            let raw_circuit = raw::new_circuit(floorplan.to_c_str().as_ptr(),
+                                               config.to_c_str().as_ptr(),
+                                               params.to_c_str().as_ptr());
+            if raw_circuit.is_null() {
                 return Err("HotSpot failed to construct a thermal circuit");
             }
 
-            let nc = (*c_circuit).nodes as uint;
+            let nc = (*raw_circuit).nodes as uint;
 
             let mut circuit = Circuit {
-                cores: (*c_circuit).cores as uint,
+                cores: (*raw_circuit).cores as uint,
                 nodes: nc,
                 capacitance: Vec::from_elem(nc, 0.0),
                 conductance: Vec::from_elem(nc * nc, 0.0),
             };
 
-            copy_nonoverlapping_memory(circuit.capacitance.as_mut_ptr(),
-                                       (*c_circuit).capacitance as *const f64, nc);
-            copy_nonoverlapping_memory(circuit.conductance.as_mut_ptr(),
-                                       (*c_circuit).conductance as *const f64, nc * nc);
-            free_circuit(c_circuit);
+            copy(circuit.capacitance.as_mut_ptr(),
+                 (*raw_circuit).capacitance as *const f64, nc);
+            copy(circuit.conductance.as_mut_ptr(),
+                 (*raw_circuit).conductance as *const f64, nc * nc);
+
+            raw::free_circuit(raw_circuit);
 
             Ok(circuit)
         }
