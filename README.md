@@ -1,7 +1,7 @@
 # HotSpot [![Build Status][travis-svg]][travis-url]
 
-The library provides an interface to [HotSpot][1], a thermal model and
-simulator used in computer-architecture studies.
+The library constructs thermal RC circuits for multiprocessor systems based on
+the block model of [HotSpot][1].
 
 ## [Documentation][docs]
 

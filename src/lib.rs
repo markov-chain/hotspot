@@ -1,4 +1,5 @@
-//! An interface to [HotSpot][1].
+//! Construction of thermal RC circuits for multiprocessor systems based on the
+//! block model of [HotSpot][1].
 //!
 //! [1]: http://lava.cs.virginia.edu/HotSpot/
 
