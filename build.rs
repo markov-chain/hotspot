@@ -23,5 +23,4 @@ fn main() {
     run!(cmd!("make").cwd(&build));
 
     println!("cargo:rustc-flags=-L {}", into.display());
-    println!("cargo:rustc-flags=-l circuit:static");
 }

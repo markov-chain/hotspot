@@ -8,6 +8,7 @@ pub struct Circuit {
     pub conductance: *mut c_double,
 }
 
+#[link(name = "circuit", kind = "static")]
 extern {
     pub fn new_circuit(floorplan: *const c_char, config: *const c_char,
                        params: *const c_char) -> *mut Circuit;
