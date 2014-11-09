@@ -3,6 +3,8 @@
 The library provides an interface to [HotSpot][1], a thermal model and
 simulator used in computer-architecture studies.
 
+## [Documentation][docs]
+
 ## Contributing
 
 1. Fork the project.
@@ -13,3 +15,4 @@ simulator used in computer-architecture studies.
 
 [travis-svg]: https://travis-ci.org/stainless-steel/hotspot.svg?branch=master
 [travis-url]: https://travis-ci.org/stainless-steel/hotspot
+[docs]: https://stainless-steel.github.io/hotspot

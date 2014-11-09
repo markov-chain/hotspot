@@ -1,1 +1,8 @@
 language: rust
+
+after_success:
+  - curl https://stainless-steel.github.io/travis/after_success.sh | bash
+
+env:
+  global:
+    secure: GkE+e7wG0SencJzDrhy+dgZpUPPgKbyXnrDgEGKCNzqCY6hJig9/wIaGgBxhDSAlXs3BL37gKAwTXs/ByMdBmTzmjuevktscRNCgm1x9TSsL8dTTrtWYLg1/F5eUqX7zGfvD8n004RUDWa3JUTvEZdG2V3/FwARziFjcj0wY+vs=
