@@ -2,7 +2,15 @@
 name = "hotspot"
 version = "0.0.1"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/stainless-steel/hotspot"
+homepage = "https://github.com/stainless-steel/hotspot"
+documentation = "https://stainless-steel.github.io/hotspot"
+description = """
+The library constructs thermal RC circuits for multiprocessor systems based on
+the block model of HotSpot.
+"""
 build = "build.rs"
 
-[dev-dependencies.assert]
-git = "https://github.com/stainless-steel/assert"
+[dev-dependencies]
+assert = "0.0.1"
