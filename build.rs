@@ -2,11 +2,11 @@
 
 macro_rules! cmd(
     ($name:expr) => (::std::io::process::Command::new($name));
-)
+);
 
 macro_rules! get(
     ($name:expr) => (::std::os::getenv($name).unwrap_or("".to_string()));
-)
+);
 
 macro_rules! run(
     ($command:expr) => (
@@ -14,7 +14,7 @@ macro_rules! run(
                         .stderr(::std::io::process::InheritFd(2))
                         .status().unwrap().success());
     );
-)
+);
 
 fn main() {
     let build = Path::new(get!("CARGO_MANIFEST_DIR")).join("build");

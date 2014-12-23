@@ -13,4 +13,4 @@ the block model of HotSpot.
 build = "build.rs"
 
 [dev-dependencies]
-assert = "0.0.1"
+assert = "0.0.2"
