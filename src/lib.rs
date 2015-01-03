@@ -34,8 +34,9 @@ impl Circuit {
     /// argument is invalid, which immediately terminates the calling program.
     /// Make sure all the input files exist.
     pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
-        use std::ptr::copy_nonoverlapping_memory as copy;
+        use std::c_str::ToCStr;
         use std::iter::repeat;
+        use std::ptr::copy_nonoverlapping_memory as copy;
 
         unsafe {
             let raw_circuit = raw::new_circuit(floorplan.to_c_str().as_ptr(),
