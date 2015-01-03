@@ -35,6 +35,7 @@ impl Circuit {
     /// Make sure all the input files exist.
     pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
         use std::ptr::copy_nonoverlapping_memory as copy;
+        use std::iter::repeat;
 
         unsafe {
             let raw_circuit = raw::new_circuit(floorplan.to_c_str().as_ptr(),
@@ -49,8 +50,8 @@ impl Circuit {
             let mut circuit = Circuit {
                 cores: (*raw_circuit).cores as uint,
                 nodes: nc,
-                capacitance: Vec::from_elem(nc, 0.0),
-                conductance: Vec::from_elem(nc * nc, 0.0),
+                capacitance: repeat(0.0).take(nc).collect::<Vec<_>>(),
+                conductance: repeat(0.0).take(nc * nc).collect::<Vec<_>>(),
             };
 
             copy(circuit.capacitance.as_mut_ptr(),
