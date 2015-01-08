@@ -5,6 +5,8 @@
 
 extern crate libc;
 
+use std::ffi::CString;
+
 mod raw;
 
 /// A thermal RC circuit.
@@ -34,14 +36,13 @@ impl Circuit {
     /// argument is invalid, which immediately terminates the calling program.
     /// Make sure all the input files exist.
     pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
-        use std::c_str::ToCStr;
         use std::iter::repeat;
         use std::ptr::copy_nonoverlapping_memory as copy;
 
         unsafe {
-            let raw_circuit = raw::new_circuit(floorplan.to_c_str().as_ptr(),
-                                               config.to_c_str().as_ptr(),
-                                               params.to_c_str().as_ptr());
+            let raw_circuit = raw::new_circuit(CString::from_slice(floorplan.as_vec()).as_ptr(),
+                                               CString::from_slice(config.as_vec()).as_ptr(),
+                                               CString::from_slice(params.as_bytes()).as_ptr());
             if raw_circuit.is_null() {
                 return Err("HotSpot failed to construct a thermal circuit");
             }
