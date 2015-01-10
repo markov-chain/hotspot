@@ -3,6 +3,8 @@
 //!
 //! [1]: http://lava.cs.virginia.edu/HotSpot/
 
+#![allow(unstable)]
+
 extern crate libc;
 
 use std::ffi::CString;
@@ -12,9 +14,9 @@ mod raw;
 /// A thermal RC circuit.
 pub struct Circuit {
     /// The number of active thermal nodes (processing elements).
-    pub cores: uint,
+    pub cores: usize,
     /// The number of thermal nodes, which is `4 * cores + 12`.
-    pub nodes: uint,
+    pub nodes: usize,
     /// An `nodes`-element vector of thermal capacitance.
     pub capacitance: Vec<f64>,
     /// An `nodes`-by-`nodes` matrix of thermal conductance.
@@ -47,10 +49,10 @@ impl Circuit {
                 return Err("HotSpot failed to construct a thermal circuit");
             }
 
-            let nc = (*raw_circuit).nodes as uint;
+            let nc = (*raw_circuit).nodes as usize;
 
             let mut circuit = Circuit {
-                cores: (*raw_circuit).cores as uint,
+                cores: (*raw_circuit).cores as usize,
                 nodes: nc,
                 capacitance: repeat(0.0).take(nc).collect::<Vec<_>>(),
                 conductance: repeat(0.0).take(nc * nc).collect::<Vec<_>>(),
