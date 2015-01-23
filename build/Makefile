@@ -4,7 +4,7 @@ jobs := $(NUM_JOBS)
 
 flags := -fPIC -O3
 build := $(root)/build
-hotspot := $(build)/libhotspot
+hotspot := $(build)/hotspot
 
 $(into)/libcircuit.a: $(into)/libhotspot.a $(into)/circuit.o
 	cp $(into)/libhotspot.a $@
