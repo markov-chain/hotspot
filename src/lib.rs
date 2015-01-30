@@ -3,7 +3,7 @@
 //!
 //! [1]: http://lava.cs.virginia.edu/HotSpot/
 
-#![allow(unstable)]
+#![feature(core, libc, std_misc, path)]
 
 extern crate libc;
 
