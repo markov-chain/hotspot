@@ -1,4 +1,4 @@
-#![allow(unstable)]
+#![feature(io, path, test)]
 
 extern crate test;
 
@@ -17,7 +17,7 @@ fn new(bench: &mut test::Bencher) {
 }
 
 fn find_fixture(name: &str) -> Path {
-    use std::io::fs::PathExtensions;
+    use std::old_io::fs::PathExtensions;
     let path = Path::new("tests").join_many(&["fixtures", name]);
     assert!(path.exists());
     path
