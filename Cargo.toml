@@ -1,6 +1,6 @@
 [package]
 name = "hotspot"
-version = "0.0.9"
+version = "0.0.10"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/stainless-steel/hotspot"
@@ -11,6 +11,9 @@ The library constructs thermal RC circuits for multiprocessor systems based on
 the block model of HotSpot.
 """
 build = "build.rs"
+
+[dependencies]
+libc = "*"
 
 [dev-dependencies]
 assert = "0.1"

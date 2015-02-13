@@ -1,14 +1,14 @@
-#![feature(io, path)]
+#![feature(env, io, path)]
 
 use std::old_io as io;
-use std::os;
+use std::env;
 
 macro_rules! cmd(
     ($name:expr) => (io::process::Command::new($name));
 );
 
 macro_rules! get(
-    ($name:expr) => (os::getenv($name).unwrap_or("".to_string()));
+    ($name:expr) => (env::var($name).unwrap_or("".to_string()));
 );
 
 macro_rules! run(
