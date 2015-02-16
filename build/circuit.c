@@ -2,17 +2,19 @@
 #include <string.h>
 #include "circuit.h"
 
-#define WHITESPACE " \t"
+#define SEPARATORS " \t"
 
 size_t parse_params(str_pair *table, size_t max, const char *params) {
-	char first = 1;
+	char name = 1;
+	char *save;
 	size_t count = 0;
 
-	char *p = strtok((char *)params, WHITESPACE);
+	char *p = strtok_r((char *)params, SEPARATORS, &save);
 	while (p != NULL && count < max) {
-		if (first) strcpy(table[count].value, p);
-		else strcpy(table[count++].name, p);
-		first = !first;
+		if (name) strcpy(table[count].name, p);
+		else strcpy(table[count++].value, p);
+		p = strtok_r(NULL, SEPARATORS, &save);
+		name = !name;
 	}
 
 	return count;
