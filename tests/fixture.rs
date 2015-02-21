@@ -1,9 +1,11 @@
-#![feature(io, path)]
+#![feature(path)]
 
-pub fn find(name: &str) -> Path {
-    use std::old_io::fs::PathExtensions;
-    let path = Path::new("tests").join_many(&["fixtures", name]);
-    assert!(path.exists());
+use ::std::path::PathBuf;
+
+pub fn find(name: &str) -> PathBuf {
+    let mut path = PathBuf::new("tests");
+    path.push("fixtures");
+    path.push(name);
     path
 }
 

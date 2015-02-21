@@ -1,10 +1,10 @@
-#![feature(env, io, path)]
+#![feature(env, path, process)]
 
-use std::old_io as io;
-use std::env;
+use std::{env, process};
+use std::path::PathBuf;
 
 macro_rules! cmd(
-    ($name:expr) => (io::process::Command::new($name));
+    ($name:expr) => (process::Command::new($name));
 );
 
 macro_rules! get(
@@ -13,17 +13,19 @@ macro_rules! get(
 
 macro_rules! run(
     ($command:expr) => (
-        assert!($command.stdout(io::process::InheritFd(1))
-                        .stderr(io::process::InheritFd(2))
+        assert!($command.stdout(process::Stdio::inherit())
+                        .stderr(process::Stdio::inherit())
                         .status().unwrap().success());
     );
 );
 
 fn main() {
-    let build = Path::new(get!("CARGO_MANIFEST_DIR")).join("build");
-    let into = Path::new(get!("OUT_DIR"));
+    let mut build = PathBuf::new(&get!("CARGO_MANIFEST_DIR"));
+    build.push("build");
 
-    run!(cmd!("make").cwd(&build));
+    let into = PathBuf::new(&get!("OUT_DIR"));
 
-    println!("cargo:rustc-flags=-L {}", into.display());
+    run!(cmd!("make").current_dir(&build));
+
+    println!("cargo:rustc-flags=-L {:}", into.to_str().unwrap());
 }

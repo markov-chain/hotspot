@@ -1,4 +1,4 @@
-#![feature(io, path)]
+#![feature(path)]
 
 #[macro_use]
 extern crate assert;

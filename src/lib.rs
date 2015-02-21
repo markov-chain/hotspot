@@ -3,11 +3,12 @@
 //!
 //! [1]: http://lava.cs.virginia.edu/HotSpot/
 
-#![feature(core, std_misc, path)]
+#![feature(core, path, std_misc)]
 
 extern crate libc;
 
 use std::ffi::CString;
+use std::path::Path;
 
 mod raw;
 
@@ -41,12 +42,34 @@ impl Circuit {
         use std::iter::repeat;
         use std::ptr::copy_nonoverlapping_memory as copy;
 
+        macro_rules! str_to_c_str(
+            ($str:expr) => (
+                match CString::new($str) {
+                    Ok(result) => result,
+                    Err(_) => return Err("failed to process the arguments"),
+                }
+            );
+        );
+
+        macro_rules! path_to_c_str(
+            ($path:expr) => (
+                match $path.to_str() {
+                    Some(path) => str_to_c_str!(path),
+                    None => return Err("failed to process the arguments"),
+                }
+            );
+        );
+
         unsafe {
-            let raw_circuit = raw::new_circuit(CString::from_slice(floorplan.as_vec()).as_ptr(),
-                                               CString::from_slice(config.as_vec()).as_ptr(),
-                                               CString::from_slice(params.as_bytes()).as_ptr());
+            let floorplan = path_to_c_str!(floorplan);
+            let config = path_to_c_str!(config);
+            let params = str_to_c_str!(params);
+
+            let raw_circuit = raw::new_circuit(floorplan.as_ptr(),
+                                               config.as_ptr(),
+                                               params.as_ptr());
             if raw_circuit.is_null() {
-                return Err("HotSpot failed to construct a thermal circuit");
+                return Err("failed to construct a thermal circuit");
             }
 
             let nc = (*raw_circuit).nodes as usize;
