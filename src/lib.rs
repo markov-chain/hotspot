@@ -3,7 +3,7 @@
 //!
 //! [1]: http://lava.cs.virginia.edu/HotSpot/
 
-#![feature(core, path, std_misc)]
+#![feature(path, std_misc)]
 
 extern crate libc;
 
@@ -40,7 +40,7 @@ impl Circuit {
     /// Make sure all the input files exist.
     pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
         use std::iter::repeat;
-        use std::ptr::copy_nonoverlapping_memory as copy;
+        use std::ptr::copy_nonoverlapping as copy;
 
         macro_rules! str_to_c_str(
             ($str:expr) => (
