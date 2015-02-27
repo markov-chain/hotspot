@@ -1,8 +1,10 @@
-#![feature(io, path, test)]
+#![feature(fs, path, test)]
 
 extern crate test;
 
 extern crate hotspot;
+
+use std::path::PathBuf;
 
 use hotspot::Circuit;
 
@@ -16,9 +18,9 @@ fn new(bench: &mut test::Bencher) {
     });
 }
 
-fn find_fixture(name: &str) -> Path {
-    use std::old_io::fs::PathExtensions;
-    let path = Path::new("tests").join_many(&["fixtures", name]);
+fn find_fixture(name: &str) -> PathBuf {
+    use std::fs::PathExt;
+    let path = PathBuf::new("tests").join("fixtures").join(name);
     assert!(path.exists());
     path
 }
