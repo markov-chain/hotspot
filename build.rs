@@ -1,4 +1,4 @@
-#![feature(path)]
+#![feature(convert)]
 
 use std::{env, process};
 use std::path::PathBuf;
@@ -20,8 +20,8 @@ macro_rules! run(
 );
 
 fn main() {
-    let build = PathBuf::new(&get!("CARGO_MANIFEST_DIR")).join("build");
-    let into = PathBuf::new(&get!("OUT_DIR"));
+    let build = PathBuf::from(&get!("CARGO_MANIFEST_DIR")).join("build");
+    let into = PathBuf::from(&get!("OUT_DIR"));
 
     run!(cmd!("make").current_dir(&build));
 

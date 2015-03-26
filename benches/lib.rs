@@ -1,4 +1,4 @@
-#![feature(fs, path, test)]
+#![feature(convert, test, path_ext)]
 
 extern crate test;
 
@@ -20,7 +20,7 @@ fn new(bench: &mut test::Bencher) {
 
 fn find_fixture(name: &str) -> PathBuf {
     use std::fs::PathExt;
-    let path = PathBuf::new("tests").join("fixtures").join(name);
+    let path = PathBuf::from("tests").join("fixtures").join(name);
     assert!(path.exists());
     path
 }

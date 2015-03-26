@@ -1,9 +1,9 @@
-#![feature(path)]
+#![feature(convert)]
 
 use ::std::path::PathBuf;
 
 pub fn find(name: &str) -> PathBuf {
-    let mut path = PathBuf::new("tests");
+    let mut path = PathBuf::from("tests");
     path.push("fixtures");
     path.push(name);
     path

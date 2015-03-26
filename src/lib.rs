@@ -3,8 +3,6 @@
 //!
 //! [1]: http://lava.cs.virginia.edu/HotSpot/
 
-#![feature(path, std_misc)]
-
 extern crate libc;
 
 use std::ffi::CString;

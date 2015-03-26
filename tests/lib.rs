@@ -1,4 +1,4 @@
-#![feature(path)]
+#![feature(convert, std_misc)]
 
 #[macro_use]
 extern crate assert;
