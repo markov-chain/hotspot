@@ -1,5 +1,3 @@
-#![feature(convert)]
-
 use std::{env, process};
 use std::path::PathBuf;
 
@@ -25,5 +23,6 @@ fn main() {
 
     run!(cmd!("make").current_dir(&build));
 
-    println!("cargo:rustc-flags=-L {}", into.display());
+    println!("cargo:rustc-link-lib=static=circuit");
+    println!("cargo:rustc-link-search=native={}", into.display());
 }

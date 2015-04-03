@@ -1,5 +1,3 @@
-#![feature(convert, std_misc)]
-
 #[macro_use]
 extern crate assert;
 
@@ -16,8 +14,9 @@ fn new() {
 
     assert_eq!(circuit.cores, 2);
     assert_eq!(circuit.nodes, 20);
-    assert_close!(circuit.capacitance, fixture::C);
-    assert_close!(circuit.conductance, fixture::G);
+    assert_within!(circuit.capacitance, fixture::C, 1e-13);
+    assert_within!(circuit.capacitance, fixture::C, 1e-13);
+    assert_within!(circuit.conductance, fixture::G, 1e-13);
 }
 
 #[test]
@@ -25,6 +24,6 @@ fn new_with_params() {
     let (floorplan, config) = (fixture::find("002.flp"), fixture::find("hotspot.config"));
     let circuit = Circuit::new(&floorplan, &config, "t_chip 0.00042 k_chip 42").unwrap();
 
-    assert_close!(circuit.capacitance, fixture::C42);
-    assert_close!(circuit.conductance, fixture::G42);
+    assert_within!(circuit.capacitance, fixture::C42, 1e-13);
+    assert_within!(circuit.conductance, fixture::G42, 1e-13);
 }

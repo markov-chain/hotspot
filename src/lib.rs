@@ -79,10 +79,10 @@ impl Circuit {
                 conductance: repeat(0.0).take(nc * nc).collect::<Vec<_>>(),
             };
 
-            copy(circuit.capacitance.as_mut_ptr(),
-                 (*raw_circuit).capacitance as *const _, nc);
-            copy(circuit.conductance.as_mut_ptr(),
-                 (*raw_circuit).conductance as *const _, nc * nc);
+            copy((*raw_circuit).capacitance as *const _,
+                 circuit.capacitance.as_mut_ptr(), nc);
+            copy((*raw_circuit).conductance as *const _,
+                 circuit.conductance.as_mut_ptr(), nc * nc);
 
             raw::free_circuit(raw_circuit);
 

@@ -1,5 +1,3 @@
-#![feature(convert)]
-
 use ::std::path::PathBuf;
 
 pub fn find(name: &str) -> PathBuf {
