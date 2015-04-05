@@ -1,4 +1,4 @@
-#![feature(convert, test, path_ext)]
+#![feature(test, path_ext)]
 
 extern crate test;
 
