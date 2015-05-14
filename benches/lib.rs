@@ -1,26 +1,19 @@
-#![feature(test, path_ext)]
+#![feature(test)]
 
 extern crate test;
-
 extern crate hotspot;
-
-use std::path::PathBuf;
 
 use hotspot::Circuit;
 
+#[allow(dead_code)]
+#[path="../tests/fixture.rs"]
+mod fixture;
+
 #[bench]
 fn new(bench: &mut test::Bencher) {
-    let floorplan = find_fixture("032.flp");
-    let config = find_fixture("hotspot.config");
+    let (floorplan, config) = (fixture::find("032.flp"), fixture::find("hotspot.config"));
 
     bench.iter(|| {
         Circuit::new(&floorplan, &config, "").unwrap()
     });
-}
-
-fn find_fixture(name: &str) -> PathBuf {
-    use std::fs::PathExt;
-    let path = PathBuf::from("tests").join("fixtures").join(name);
-    assert!(path.exists());
-    path
 }

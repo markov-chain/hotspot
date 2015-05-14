@@ -1,5 +1,4 @@
 extern crate assert;
-
 extern crate hotspot;
 
 use hotspot::Circuit;
