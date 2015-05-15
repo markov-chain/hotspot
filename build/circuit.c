@@ -48,7 +48,7 @@ Circuit *new_circuit(const char *floorplan, const char *config, const char *para
 	populate_C_model(RC_model, flp);
 
 	Circuit *circuit = (Circuit *)malloc(sizeof(Circuit));
-	if (!circuit) goto err_malloc_HotSpot;
+	if (!circuit) goto err_malloc_Circuit;
 
 	circuit->cores = flp->n_units;
 	circuit->nodes = RC_model->block->n_nodes;
@@ -79,7 +79,7 @@ err_malloc_conductance:
 err_malloc_capacitance:
 	free(circuit);
 
-err_malloc_HotSpot:
+err_malloc_Circuit:
 	delete_RC_model(RC_model);
 
 err_alloc_RC_model:
