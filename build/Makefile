@@ -1,19 +1,18 @@
 root := $(CARGO_MANIFEST_DIR)
-into := $(OUT_DIR)
-jobs := $(NUM_JOBS)
+output := $(OUT_DIR)
 
 flags := -fPIC -O3
 build := $(root)/build
-hotspot := $(build)/hotspot
+source := $(build)/hotspot
 
-$(into)/libcircuit.a: $(into)/libhotspot.a $(into)/circuit.o
-	cp $(into)/libhotspot.a $@
-	ar -q $@ $(into)/circuit.o
+$(output)/libcircuit.a: $(output)/libhotspot.a $(output)/circuit.o
+	cp $(output)/libhotspot.a $@
+	ar -q $@ $(output)/circuit.o
 
-$(into)/libhotspot.a:
-	$(MAKE) -C $(hotspot) -j$(jobs) EXTRAFLAGS='$(flags)'
-	cp $(hotspot)/libhotspot.a $@
-	$(MAKE) -C $(hotspot) clean
+$(output)/libhotspot.a:
+	$(MAKE) -C $(source) -j$(NUM_JOBS) EXTRAFLAGS='$(flags)'
+	cp $(source)/libhotspot.a $@
+	$(MAKE) -C $(source) clean
 
-$(into)/circuit.o: $(build)/circuit.c
-	$(CC) $(flags) -I$(hotspot) -I$(build) -c $< -o $@
+$(output)/circuit.o: $(build)/circuit.c
+	$(CC) $(flags) -I$(source) -I$(build) -c $< -o $@

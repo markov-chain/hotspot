@@ -19,10 +19,10 @@ macro_rules! run(
 
 fn main() {
     let build = PathBuf::from(&get!("CARGO_MANIFEST_DIR")).join("build");
-    let into = PathBuf::from(&get!("OUT_DIR"));
+    let output = PathBuf::from(&get!("OUT_DIR"));
 
     run!(cmd!("make").current_dir(&build));
 
     println!("cargo:rustc-link-lib=static=circuit");
-    println!("cargo:rustc-link-search={}", into.display());
+    println!("cargo:rustc-link-search={}", output.display());
 }
