@@ -3,7 +3,7 @@ output := $(OUT_DIR)
 
 flags := -fPIC -O3
 build := $(root)/build
-source := $(build)/hotspot
+source := $(build)/source
 
 $(output)/libcircuit.a: $(output)/libhotspot.a $(output)/circuit.o
 	cp $(output)/libhotspot.a $@
