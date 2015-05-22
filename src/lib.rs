@@ -6,6 +6,8 @@
 extern crate libc;
 
 use std::ffi::CString;
+use std::fs;
+use std::io::{Error, ErrorKind, Result};
 use std::path::Path;
 
 mod raw;
@@ -30,19 +32,21 @@ impl Circuit {
     /// line bears the same meaning as the command-line arguments of the HotSpot tool. The names of
     /// parameters should not include dashes in front of them; for instance, `params` can be
     /// `"t_chip 0.00015 k_chip 100.0"`.
-    ///
-    /// It is important to note that the function relies on the original HotSpot library written in
-    /// C. This library calls `exit(1)` whenever an input argument is invalid, which immediately
-    /// terminates the calling program. Make sure all the input files exist.
-    pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit, &'static str> {
+    pub fn new(floorplan: &Path, config: &Path, params: &str) -> Result<Circuit> {
         use std::iter::repeat;
         use std::ptr::copy_nonoverlapping as copy;
+
+        macro_rules! raise(
+            ($kind:ident, $message:expr) => (
+                return Err(Error::new(ErrorKind::$kind, $message))
+            );
+        );
 
         macro_rules! str_to_c_str(
             ($str:expr) => (
                 match CString::new($str) {
                     Ok(result) => result,
-                    Err(_) => return Err("failed to process the arguments"),
+                    Err(_) => raise!(Other, "failed to process the arguments"),
                 }
             );
         );
@@ -51,10 +55,17 @@ impl Circuit {
             ($path:expr) => (
                 match $path.to_str() {
                     Some(path) => str_to_c_str!(path),
-                    None => return Err("failed to process the arguments"),
+                    None => raise!(Other, "failed to process the arguments"),
                 }
             );
         );
+
+        if fs::metadata(floorplan).is_err() {
+            raise!(NotFound, "the floorplan file does not exist");
+        }
+        if fs::metadata(config).is_err() {
+            raise!(NotFound, "the configuration file does not exist");
+        }
 
         unsafe {
             let floorplan = path_to_c_str!(floorplan);
@@ -63,7 +74,7 @@ impl Circuit {
 
             let c_circuit = raw::new_circuit(floorplan.as_ptr(), config.as_ptr(), params.as_ptr());
             if c_circuit.is_null() {
-                return Err("failed to construct a thermal circuit");
+                raise!(Other, "failed to construct a thermal circuit");
             }
 
             let nc = (*c_circuit).nodes as usize;
