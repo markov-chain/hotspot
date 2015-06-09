@@ -15,6 +15,6 @@ the block model of [HotSpot][1].
 
 [version-img]: https://img.shields.io/crates/v/hotspot.svg
 [version-url]: https://crates.io/crates/hotspot
-[status-svg]: https://travis-ci.org/simulated-reality/hotspot.svg?branch=master
+[status-img]: https://travis-ci.org/simulated-reality/hotspot.svg?branch=master
 [status-url]: https://travis-ci.org/simulated-reality/hotspot
 [docs]: https://simulated-reality.github.io/hotspot
