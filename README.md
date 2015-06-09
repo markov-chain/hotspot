@@ -1,4 +1,4 @@
-# HotSpot [![Build Status][status-svg]][status-url]
+# HotSpot [![Version][version-img]][version-url] [![Status][status-img]][status-url]
 
 The library constructs thermal RC circuits for multiprocessor systems based on
 the block model of [HotSpot][1].
@@ -8,11 +8,13 @@ the block model of [HotSpot][1].
 ## Contributing
 
 1. Fork the project.
-2. Implement your feature.
+2. Implement your idea.
 3. Open a pull request.
 
 [1]: http://lava.cs.virginia.edu/HotSpot/
 
-[status-svg]: https://travis-ci.org/stainless-steel/hotspot.svg?branch=master
-[status-url]: https://travis-ci.org/stainless-steel/hotspot
-[docs]: https://stainless-steel.github.io/hotspot
+[version-img]: https://img.shields.io/crates/v/hotspot.svg
+[version-url]: https://crates.io/crates/hotspot
+[status-svg]: https://travis-ci.org/simulated-reality/hotspot.svg?branch=master
+[status-url]: https://travis-ci.org/simulated-reality/hotspot
+[docs]: https://simulated-reality.github.io/hotspot
