@@ -1,6 +1,6 @@
 [package]
 name = "hotspot"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/markov-chain/hotspot"
@@ -8,8 +8,7 @@ homepage = "https://github.com/markov-chain/hotspot"
 documentation = "https://markov-chain.github.io/hotspot"
 description = """
 The library constructs thermal RC circuits for multiprocessor systems based on
-the block model of HotSpot.
-"""
+the block model of HotSpot."""
 build = "build.rs"
 
 [dependencies]
