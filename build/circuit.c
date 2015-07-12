@@ -41,7 +41,7 @@ Circuit *new_circuit(const char *floorplan, const char *config, const char *para
 	flp_t *flp = read_flp((char *)floorplan, FALSE);
 	if (!flp) goto err_read_flp;
 
-	RC_model_t *RC_model = alloc_RC_model(&thermal_config, flp);
+	RC_model_t *RC_model = alloc_RC_model(&thermal_config, flp, 0);
 	if (!RC_model) goto err_alloc_RC_model;
 
 	populate_R_model(RC_model, flp);

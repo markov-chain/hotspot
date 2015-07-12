@@ -1,5 +1,5 @@
-use std::{env, process};
 use std::path::PathBuf;
+use std::{env, process};
 
 macro_rules! cmd(
     ($name:expr) => (process::Command::new($name));
