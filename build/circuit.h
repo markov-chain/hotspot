@@ -13,7 +13,7 @@ typedef struct {
 	double *conductance;
 } Circuit;
 
-Circuit *new_circuit(const char *floorplan, const char *config, const char *params);
+Circuit *new_circuit(const char *floorplan, const char *config);
 void free_circuit(Circuit *circuit);
 
 #endif

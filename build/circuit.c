@@ -1,42 +1,18 @@
 #include <stdlib.h>
-#include <string.h>
 #include "circuit.h"
 
-#define SEPARATORS " \t"
-
-size_t parse_params(str_pair *table, size_t max, const char *params) {
-	char name = 1;
-	char *save;
-	size_t count = 0;
-
-	char *p = strtok_r((char *)params, SEPARATORS, &save);
-	while (p != NULL && count < max) {
-		if (name) strcpy(table[count].name, p);
-		else strcpy(table[count++].value, p);
-		p = strtok_r(NULL, SEPARATORS, &save);
-		name = !name;
-	}
-
-	return count;
-}
-
-Circuit *new_circuit(const char *floorplan, const char *config, const char *params) {
+Circuit *new_circuit(const char *floorplan, const char *config) {
 	thermal_config_t thermal_config = default_thermal_config();
 
-	str_pair *table = (str_pair *)malloc(sizeof(str_pair) * MAX_ENTRIES);
-	if (!table) goto err_malloc_str_pair;
-
 	if (config && strlen(config) > 0) {
+		str_pair *table = (str_pair *)malloc(sizeof(str_pair) * MAX_ENTRIES);
+		if (!table) goto err_malloc_str_pair;
+
 		size_t count = read_str_pairs(table, MAX_ENTRIES, (char *)config);
 		thermal_config_add_from_strs(&thermal_config, table, count);
-	}
 
-	if (params && strlen(params) > 0) {
-		size_t count = parse_params(table, MAX_ENTRIES, params);
-		thermal_config_add_from_strs(&thermal_config, table, count);
+		free(table);
 	}
-
-	free(table);
 
 	flp_t *flp = read_flp((char *)floorplan, FALSE);
 	if (!flp) goto err_read_flp;

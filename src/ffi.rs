@@ -9,7 +9,6 @@ pub struct Circuit {
 }
 
 extern {
-    pub fn new_circuit(floorplan: *const c_char, config: *const c_char,
-                       params: *const c_char) -> *mut Circuit;
+    pub fn new_circuit(floorplan: *const c_char, config: *const c_char) -> *mut Circuit;
     pub fn free_circuit(circuit: *mut Circuit);
 }
