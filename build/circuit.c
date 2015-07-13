@@ -19,6 +19,7 @@ Circuit *new_circuit(const char *floorplan, const char *config) {
 
 	RC_model_t *RC_model = alloc_RC_model(&thermal_config, flp, 0);
 	if (!RC_model) goto err_alloc_RC_model;
+	if (RC_model->type != BLOCK_MODEL) goto err_model_type;
 
 	populate_R_model(RC_model, flp);
 	populate_C_model(RC_model, flp);
@@ -56,6 +57,7 @@ err_malloc_capacitance:
 	free(circuit);
 
 err_malloc_Circuit:
+err_model_type:
 	delete_RC_model(RC_model);
 
 err_alloc_RC_model:
