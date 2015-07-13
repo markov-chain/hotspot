@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "circuit.h"
 
-Circuit *new_circuit(const char *floorplan, const char *config) {
+Circuit *new_Circuit(const char *floorplan, const char *config) {
 	thermal_config_t thermal_config = default_thermal_config();
 
 	if (config && strlen(config) > 0) {
@@ -69,7 +69,7 @@ err_malloc_str_pair:
 	return NULL;
 }
 
-void free_circuit(Circuit *circuit) {
+void drop_Circuit(Circuit *circuit) {
 	free(circuit->capacitance);
 	free(circuit->conductance);
 	free(circuit);

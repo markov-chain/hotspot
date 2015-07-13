@@ -9,6 +9,6 @@ pub struct Circuit {
 }
 
 extern {
-    pub fn new_circuit(floorplan: *const c_char, config: *const c_char) -> *mut Circuit;
-    pub fn free_circuit(circuit: *mut Circuit);
+    pub fn new_Circuit(floorplan: *const c_char, config: *const c_char) -> *mut Circuit;
+    pub fn drop_Circuit(circuit: *mut Circuit);
 }

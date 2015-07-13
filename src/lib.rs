@@ -66,7 +66,7 @@ impl Circuit {
             let floorplan = path_to_c_str!(floorplan);
             let config = path_to_c_str!(config);
 
-            let circuit = ffi::new_circuit(floorplan.as_ptr(), config.as_ptr());
+            let circuit = ffi::new_Circuit(floorplan.as_ptr(), config.as_ptr());
             if circuit.is_null() {
                 raise!(Other, "failed to construct a thermal circuit");
             }
@@ -81,7 +81,7 @@ impl Circuit {
             copy(circuit.capacitance as *const _, capacitance.as_mut_ptr(), nodes);
             copy(circuit.conductance as *const _, conductance.as_mut_ptr(), nodes * nodes);
 
-            ffi::free_circuit(circuit as *const _ as *mut _);
+            ffi::drop_Circuit(circuit as *const _ as *mut _);
 
             Ok(Circuit {
                 cores: cores,
