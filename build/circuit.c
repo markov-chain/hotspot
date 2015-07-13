@@ -17,18 +17,18 @@ Circuit *new_circuit(const char *floorplan, const char *config) {
 	flp_t *flp = read_flp((char *)floorplan, FALSE);
 	if (!flp) goto err_read_flp;
 
-	RC_model_t *RC_model = alloc_RC_model(&thermal_config, flp, 0);
-	if (!RC_model) goto err_alloc_RC_model;
-	if (RC_model->type != BLOCK_MODEL) goto err_model_type;
+	RC_model_t *model = alloc_RC_model(&thermal_config, flp, 0);
+	if (!model) goto err_alloc_RC_model;
+	if (model->type != BLOCK_MODEL) goto err_model_type;
 
-	populate_R_model(RC_model, flp);
-	populate_C_model(RC_model, flp);
+	populate_R_model(model, flp);
+	populate_C_model(model, flp);
 
 	Circuit *circuit = (Circuit *)malloc(sizeof(Circuit));
 	if (!circuit) goto err_malloc_Circuit;
 
 	circuit->cores = flp->n_units;
-	circuit->nodes = RC_model->block->n_nodes;
+	circuit->nodes = model->block->n_nodes;
 
 	size_t i, j, nodes = circuit->nodes;
 
@@ -36,16 +36,16 @@ Circuit *new_circuit(const char *floorplan, const char *config) {
 	if (!circuit->capacitance) goto err_malloc_capacitance;
 
 	for (i = 0; i < nodes; i++)
-		circuit->capacitance[i] = RC_model->block->a[i];
+		circuit->capacitance[i] = model->block->a[i];
 
 	circuit->conductance = (double *)malloc(nodes * nodes * sizeof(double));
 	if (!circuit->conductance) goto err_malloc_conductance;
 
 	for (i = 0; i < nodes; i++)
 		for (j = 0; j < nodes; j++)
-			circuit->conductance[i * nodes + j] = RC_model->block->b[i][j];
+			circuit->conductance[i * nodes + j] = model->block->b[i][j];
 
-	delete_RC_model(RC_model);
+	delete_RC_model(model);
 	free_flp(flp, FALSE);
 
 	return circuit;
@@ -58,7 +58,7 @@ err_malloc_capacitance:
 
 err_malloc_Circuit:
 err_model_type:
-	delete_RC_model(RC_model);
+	delete_RC_model(model);
 
 err_alloc_RC_model:
 	free_flp(flp, FALSE);
