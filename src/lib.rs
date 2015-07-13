@@ -3,7 +3,9 @@
 //! [1]: http://lava.cs.virginia.edu/HotSpot
 
 extern crate libc;
+extern crate matrix;
 
+use matrix::{Compressed, Dense, Diagonal, Make, Shape};
 use std::ffi::CString;
 use std::fs;
 use std::io::{Error, ErrorKind, Result};
@@ -41,10 +43,10 @@ pub struct Circuit {
     pub cores: usize,
     /// The number of thermal nodes.
     pub nodes: usize,
-    /// An `nodes`-element vector of thermal capacitance.
-    pub capacitance: Vec<f64>,
-    /// An `nodes`-by-`nodes` matrix of thermal conductance.
-    pub conductance: Vec<f64>,
+    /// The thermal capacitance matrix.
+    pub capacitance: Diagonal<f64>,
+    /// The thermal conductance matrix.
+    pub conductance: Compressed<f64>,
 }
 
 impl Circuit {
@@ -52,7 +54,7 @@ impl Circuit {
     ///
     /// The only supported model is the block model.
     pub fn new<F: AsRef<Path>, C: AsRef<Path>>(floorplan: F, config: C) -> Result<Circuit> {
-        use std::ptr::copy_nonoverlapping as copy;
+        use std::slice::from_raw_parts;
 
         let (floorplan, config) = (floorplan.as_ref(), config.as_ref());
         if fs::metadata(floorplan).is_err() {
@@ -75,11 +77,13 @@ impl Circuit {
 
             let cores = circuit.cores as usize;
             let nodes = circuit.nodes as usize;
-            let mut capacitance = vec![0.0; nodes];
-            let mut conductance = vec![0.0; nodes * nodes];
 
-            copy(circuit.capacitance as *const _, capacitance.as_mut_ptr(), nodes);
-            copy(circuit.conductance as *const _, conductance.as_mut_ptr(), nodes * nodes);
+            let capacitance = from_raw_parts(circuit.capacitance as *const _, nodes);
+            let capacitance = Diagonal::make(capacitance, Shape::Square(nodes));
+
+            let conductance = from_raw_parts(circuit.conductance as *const _, nodes * nodes);
+            let conductance = Dense::make(conductance, Shape::Square(nodes));
+            let conductance = Compressed::from(conductance);
 
             ffi::drop_Circuit(circuit as *const _ as *mut _);
 
