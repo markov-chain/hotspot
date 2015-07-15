@@ -13,7 +13,7 @@ fn new() {
 
     assert_eq!(circuit.cores, 2);
     assert_eq!(circuit.nodes, 20);
-    assert::close(&circuit.capacitance[..], &fixture::C[..], 1e-13);
-    assert::close(&Dense::from(&circuit.conductance)[..], &fixture::G[..], 1e-13);
+    assert::close(&*circuit.capacitance, &fixture::C[..], 1e-13);
+    assert::close(&*Dense::from(&circuit.conductance), &fixture::G[..], 1e-13);
     assert_eq!(circuit.conductance.nonzeros, 80);
 }
