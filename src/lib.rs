@@ -5,7 +5,7 @@
 extern crate libc;
 extern crate matrix;
 
-use matrix::{Compressed, Conventional, Diagonal};
+use matrix::format::{Compressed, Conventional, Diagonal};
 use std::ffi::CString;
 use std::fs;
 use std::io::{Error, ErrorKind, Result};
@@ -79,10 +79,10 @@ impl Circuit {
             let nodes = circuit.nodes as usize;
 
             let capacitance = from_raw_parts(circuit.capacitance as *const _, nodes);
-            let capacitance = Diagonal::from_slice(capacitance, nodes);
+            let capacitance = Diagonal::from_slice(nodes, capacitance);
 
             let conductance = from_raw_parts(circuit.conductance as *const _, nodes * nodes);
-            let conductance = Conventional::from_slice(conductance, nodes);
+            let conductance = Conventional::from_slice(nodes, conductance);
             let conductance = Compressed::from(conductance);
 
             ffi::drop_Circuit(circuit as *const _ as *mut _);

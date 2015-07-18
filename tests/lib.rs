@@ -3,7 +3,7 @@ extern crate hotspot;
 extern crate matrix;
 
 use hotspot::Circuit;
-use matrix::Conventional;
+use matrix::format::Conventional;
 
 mod fixture;
 
