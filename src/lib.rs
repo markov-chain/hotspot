@@ -40,7 +40,7 @@ macro_rules! path_to_c_str(
 /// A thermal circuit.
 pub struct Circuit {
     /// The number of processing elements.
-    pub cores: usize,
+    pub units: usize,
     /// The number of thermal nodes.
     pub nodes: usize,
     /// The thermal capacitance matrix.
@@ -75,7 +75,7 @@ impl Circuit {
 
             let circuit = &*circuit;
 
-            let cores = circuit.cores as usize;
+            let units = circuit.units as usize;
             let nodes = circuit.nodes as usize;
 
             let capacitance = from_raw_parts(circuit.capacitance as *const _, nodes);
@@ -88,7 +88,7 @@ impl Circuit {
             ffi::drop_Circuit(circuit as *const _ as *mut _);
 
             Ok(Circuit {
-                cores: cores,
+                units: units,
                 nodes: nodes,
                 capacitance: capacitance,
                 conductance: conductance,

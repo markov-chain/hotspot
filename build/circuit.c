@@ -27,7 +27,7 @@ Circuit *new_Circuit(const char *floorplan, const char *config) {
 	Circuit *circuit = (Circuit *)malloc(sizeof(Circuit));
 	if (!circuit) goto err_malloc_Circuit;
 
-	circuit->cores = flp->n_units;
+	circuit->units = flp->n_units;
 	circuit->nodes = model->block->n_nodes;
 
 	size_t i, j, nodes = circuit->nodes;

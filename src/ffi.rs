@@ -2,7 +2,7 @@ use libc::{c_char, c_double, size_t};
 
 #[repr(C)]
 pub struct Circuit {
-    pub cores: size_t,
+    pub units: size_t,
     pub nodes: size_t,
     pub capacitance: *mut c_double,
     pub conductance: *mut c_double,

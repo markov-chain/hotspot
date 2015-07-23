@@ -7,7 +7,7 @@
 #include <temperature_block.h>
 
 typedef struct {
-	size_t cores;
+	size_t units;
 	size_t nodes;
 	double *capacitance;
 	double *conductance;
