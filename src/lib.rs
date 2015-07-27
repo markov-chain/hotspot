@@ -19,22 +19,18 @@ macro_rules! raise(
     );
 );
 
-macro_rules! str_to_c_str(
-    ($str:expr) => (
-        match CString::new($str) {
-            Ok(result) => result,
-            Err(_) => raise!(Other, "failed to process the arguments"),
-        }
-    );
+macro_rules! str_to_cstr(
+    ($str:expr) => (match CString::new($str) {
+        Ok(result) => result,
+        _ => raise!(Other, "failed to process the arguments"),
+    });
 );
 
-macro_rules! path_to_c_str(
-    ($path:expr) => (
-        match $path.to_str() {
-            Some(path) => str_to_c_str!(path),
-            None => raise!(Other, "failed to process the arguments"),
-        }
-    );
+macro_rules! path_to_cstr(
+    ($path:expr) => (match $path.to_str() {
+        Some(path) => str_to_cstr!(path),
+        _ => raise!(Other, "failed to process the arguments"),
+    });
 );
 
 /// A thermal circuit.
@@ -65,8 +61,8 @@ impl Circuit {
         }
 
         unsafe {
-            let floorplan = path_to_c_str!(floorplan);
-            let config = path_to_c_str!(config);
+            let floorplan = path_to_cstr!(floorplan);
+            let config = path_to_cstr!(config);
 
             let circuit = ffi::new_Circuit(floorplan.as_ptr(), config.as_ptr());
             if circuit.is_null() {
