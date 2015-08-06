@@ -1,6 +1,6 @@
 [package]
 name = "hotspot"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/markov-chain/hotspot"
@@ -11,7 +11,7 @@ build = "build.rs"
 
 [dependencies]
 libc = "*"
-matrix = { version = "0.17", default-features = false }
+matrix = { version = "0.18", default-features = false }
 
 [dev-dependencies]
 assert = "*"
