@@ -2,18 +2,18 @@
 
 The package provides an interface to [HotSpot][1].
 
-## [Documentation][docs]
+## [Documentation][doc]
 
-## Contributing
+## Contribution
 
-1. Fork the project.
-2. Implement your idea.
-3. Open a pull request.
+Your contribution is highly appreciated. Do not hesitate to open an issue or a
+pull request. Note that any contribution submitted for inclusion in the project
+will be licensed according to the terms given in [LICENSE.md](LICENSE.md).
 
 [1]: http://lava.cs.virginia.edu/HotSpot
 
-[version-img]: https://img.shields.io/crates/v/hotspot.svg
-[version-url]: https://crates.io/crates/hotspot
+[doc]: https://markov-chain.github.io/hotspot
 [status-img]: https://travis-ci.org/markov-chain/hotspot.svg?branch=master
 [status-url]: https://travis-ci.org/markov-chain/hotspot
-[docs]: https://markov-chain.github.io/hotspot
+[version-img]: https://img.shields.io/crates/v/hotspot.svg
+[version-url]: https://crates.io/crates/hotspot
